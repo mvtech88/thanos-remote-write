@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-metrics-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: metrics-app
+  template:
+    metadata:
+      labels:
+        app: metrics-app
+    spec:
+      imagePullSecrets:
+      - name: dockersecret
+      containers:
+      - name: metrics-app
+        image: mohitverma1688/sample-metric-app:latest
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-app-service
+  labels:
+   app: metrics-app
+   release: prometheus
+spec:
+  selector:
+    app: metrics-app
+  ports:
+    - protocol: TCP
+      name: metrics
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
+

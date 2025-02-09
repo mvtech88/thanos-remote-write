@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: metrics-app-monitor
+  labels:
+    release: prometheus  # 🔹 Ensure this matches the Prometheus instance label
+spec:
+  selector:
+    matchLabels:
+      app: metrics-app  # 🔹 Should match your application's Service label
+  endpoints:
+    - port: metrics  # 🔹 Must match the name in the Service spec
+      path: /metrics
+      interval: 10s  # 🔹 Scrape every 10 seconds
+

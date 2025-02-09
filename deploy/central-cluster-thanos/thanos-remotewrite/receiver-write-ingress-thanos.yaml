@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: receiver-write-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /api/v1/receive
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: receiver-write.example.com
+    http:
+      paths:
+      - path: /api/v1/receive
+        pathType: Prefix
+        backend:
+          service:
+            name: receiver-write
+            port:
+              number: 10908
+
